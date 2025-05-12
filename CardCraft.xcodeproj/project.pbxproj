@@ -6,6 +6,10 @@
 	objectVersion = 77;
 	objects = {
 
+/* Begin PBXBuildFile section */
+		176D996E2DD2592F00ACEED2 /* Portal in Frameworks */ = {isa = PBXBuildFile; productRef = 176D996D2DD2592F00ACEED2 /* Portal */; };
+/* End PBXBuildFile section */
+
 /* Begin PBXFileReference section */
 		176D96E82DD24C0300ACEED2 /* CardCraft.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CardCraft.app; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -23,6 +27,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				176D996E2DD2592F00ACEED2 /* Portal in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -65,6 +70,7 @@
 			);
 			name = CardCraft;
 			packageProductDependencies = (
+				176D996D2DD2592F00ACEED2 /* Portal */,
 			);
 			productName = CardCraft;
 			productReference = 176D96E82DD24C0300ACEED2 /* CardCraft.app */;
@@ -94,6 +100,9 @@
 			);
 			mainGroup = 176D96DF2DD24C0300ACEED2;
 			minimizedProjectReferenceProxies = 1;
+			packageReferences = (
+				176D996C2DD2592F00ACEED2 /* XCRemoteSwiftPackageReference "Portal" */,
+			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 176D96E92DD24C0300ACEED2 /* Products */;
 			projectDirPath = "";
@@ -324,6 +333,25 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		176D996C2DD2592F00ACEED2 /* XCRemoteSwiftPackageReference "Portal" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/Aeastr/Portal";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.0.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		176D996D2DD2592F00ACEED2 /* Portal */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 176D996C2DD2592F00ACEED2 /* XCRemoteSwiftPackageReference "Portal" */;
+			productName = Portal;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 176D96E02DD24C0300ACEED2 /* Project object */;
 }

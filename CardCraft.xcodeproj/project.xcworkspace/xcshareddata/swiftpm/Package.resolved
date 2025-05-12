@@ -1,0 +1,15 @@
+{
+  "originHash" : "a40b7d8e7d68771c4b2ef8a8dc1a3cc5646286472c81d0f067229664a4cec693",
+  "pins" : [
+    {
+      "identity" : "portal",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/Aeastr/Portal",
+      "state" : {
+        "revision" : "ffeda00265e3a8cef12164348d25fef54d971e4c",
+        "version" : "1.0.0"
+      }
+    }
+  ],
+  "version" : 3
+}

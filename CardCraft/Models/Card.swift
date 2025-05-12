@@ -13,6 +13,14 @@ struct Card: Identifiable, Codable {
     let emoji: String
     let colors: [CardColor]
     let message: String
+    
+    init(id: String = UUID().uuidString, title: String, emoji: String, colors: [CardColor], message: String) {
+        self.id = id
+        self.title = title
+        self.emoji = emoji
+        self.colors = colors
+        self.message = message
+    }
 }
 
 enum CardColor: Codable {
@@ -20,6 +28,12 @@ enum CardColor: Codable {
     case green
     case orange
     case blue
+    case purple
+    case pink
+    case teal
+    case yellow
+    case indigo
+    case mint
     
     func getColor() -> Color {
         switch self {
@@ -31,6 +45,18 @@ enum CardColor: Codable {
             return .orange
         case .blue:
             return .blue
+        case .purple:
+            return .purple
+        case .pink:
+            return .pink
+        case .teal:
+            return .teal
+        case .yellow:
+            return .yellow
+        case .indigo:
+            return .indigo
+        case .mint:
+            return .mint
         }
     }
 }
