@@ -17,6 +17,7 @@ struct CardCell: View {
             Text(card.title)
                 .customFont(size: 20, weight: .bold, design: .rounded)
                 .multilineTextAlignment(.center)
+                .fixedSize()
         }
         .alignView(to: .center)
         .alignViewVertically(to: .center)
@@ -24,7 +25,8 @@ struct CardCell: View {
         .background {
             let color = card.colors.first?.getColor() ?? Color.orange
             RoundedRectangle(cornerRadius: 20)
-                .fill(color.gradient.opacity(0.3))
+                //.fill(color.gradient.opacity(0.3))
+                .fill(color.gradient.secondary)
         }
         .overlay {
             let color = card.colors.first?.getColor() ?? Color.orange
