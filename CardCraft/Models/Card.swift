@@ -25,7 +25,7 @@ struct Card: Identifiable, Codable {
     }
 }
 
-enum CardColor: Codable {
+enum CardColor: Identifiable, Codable, CaseIterable {
     case red
     case green
     case orange
@@ -36,6 +36,8 @@ enum CardColor: Codable {
     case yellow
     case indigo
     case mint
+    
+    var id: Self { self }
     
     func getColor() -> Color {
         switch self {
