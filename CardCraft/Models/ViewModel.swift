@@ -8,6 +8,7 @@
 import SwiftUI
 
 final class ViewModel: ObservableObject {
+    // MARK: - Selected Card
     @Published var selectedCard: Card? = nil
     
     func showCardDetailView(for card: Card) {
@@ -19,10 +20,15 @@ final class ViewModel: ObservableObject {
     }
     
     func hideCardDetailView() {
+        guard self.selectedCard != nil else { return }
+        
         withAnimation(.spring) {
             self.selectedCard = nil
         }
         
         HapticManager.shared.impact(style: .soft)
     }
+    
+    // MARK: - Search
+    @Published var searchText: String = ""
 }

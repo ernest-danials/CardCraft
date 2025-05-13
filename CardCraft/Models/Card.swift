@@ -13,13 +13,15 @@ struct Card: Identifiable, Codable {
     let emoji: String
     let colors: [CardColor]
     let message: String
+    let creationDate: Date
     
-    init(id: String = UUID().uuidString, title: String, emoji: String, colors: [CardColor], message: String) {
+    init(id: String = UUID().uuidString, title: String, emoji: String, colors: [CardColor], message: String, creationDate: Date) {
         self.id = id
         self.title = title
         self.emoji = emoji
         self.colors = colors
         self.message = message
+        self.creationDate = creationDate
     }
 }
 

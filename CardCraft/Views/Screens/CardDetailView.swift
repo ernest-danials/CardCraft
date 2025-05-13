@@ -18,6 +18,10 @@ struct CardDetailView: View {
                 VStack {
                     CardCell(card: card)
                         .portalDestination(item: card)
+                    
+                    Divider().padding(.vertical)
+                    
+                    
                 }
                 .padding(.horizontal)
             }
@@ -27,6 +31,7 @@ struct CardDetailView: View {
                     Button("Done") {
                         self.viewModel.hideCardDetailView()
                     }
+                    .fontWeight(.semibold)
                 }
             }
         }
@@ -34,11 +39,7 @@ struct CardDetailView: View {
 }
 
 #Preview {
-    CardDetailView(card: Card(
-        title: "Birthday Wishes",
-        emoji: "🎂",
-        colors: [.blue, .purple, .pink],
-        message: "Wishing you a fantastic birthday filled with joy and laughter! May all your dreams come true."
-    ))
+    CardDetailView(card: MockData.cardData[0])
     .environmentObject(ViewModel())
+    .environmentObject(CrossModel())
 }
