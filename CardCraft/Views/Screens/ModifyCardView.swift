@@ -218,6 +218,7 @@ struct ModifyCardView: View {
                 Button("Save") {
                     saveChanges()
                     self.viewModel.hideCreateCardView()
+                    self.viewModel.hideCardDetailView()
                     reset()
                     HapticManager.shared.impact(style: .soft)
                 }
