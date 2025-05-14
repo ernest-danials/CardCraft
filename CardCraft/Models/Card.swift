@@ -13,29 +13,22 @@ struct Card: Identifiable, Codable {
     let emoji: String
     let colors: [CardColor]
     let message: String
+    let soundEffect: SoundEffect?
     let creationDate: Date
     
-    init(id: String = UUID().uuidString, title: String, emoji: String, colors: [CardColor], message: String, creationDate: Date) {
+    init(id: String = UUID().uuidString, title: String, emoji: String, colors: [CardColor], message: String, soundEffect: SoundEffect?, creationDate: Date) {
         self.id = id
         self.title = title
         self.emoji = emoji
         self.colors = colors
         self.message = message
+        self.soundEffect = soundEffect
         self.creationDate = creationDate
     }
 }
 
 enum CardColor: Identifiable, Codable, CaseIterable {
-    case red
-    case green
-    case orange
-    case blue
-    case purple
-    case pink
-    case teal
-    case yellow
-    case indigo
-    case mint
+    case red, green, orange, blue, purple, pink, teal, yellow, indigo, mint
     
     var id: Self { self }
     

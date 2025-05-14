@@ -65,6 +65,18 @@ struct CardDetailView: View {
                                 .customFont(size: 18, weight: .medium, design: .rounded)
                                 .multilineTextAlignment(.center)
                         }
+                        
+                        Divider().padding(.vertical)
+                        
+                        VStack {
+                            Text("Sound Effect")
+                                .customFont(size: 18, weight: .medium)
+                                .foregroundStyle(.secondary)
+                            
+                            Text(self.card.soundEffect?.rawValue ?? "No Sound Effect")
+                                .customFont(size: 18, weight: .medium, design: .rounded)
+                                .multilineTextAlignment(.center)
+                        }
                     }
                     .safeAreaPadding(.horizontal)
                 }
@@ -106,7 +118,7 @@ struct CardDetailView: View {
                         .fontWeight(.semibold)
                     }
                 }
-                .safeAreaInset(edge: .bottom, spacing: 20) {
+                .safeAreaInset(edge: .bottom, spacing: 25) {
                     VStack(spacing: 13) {
                         HStack {
                             NavigationLink {

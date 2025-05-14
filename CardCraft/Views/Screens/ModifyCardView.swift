@@ -26,6 +26,7 @@ struct ModifyCardView: View {
     @State private var emoji: String = ""
     @State private var message: String = ""
     @State private var selectedColors: Set<CardColor> = []
+    @State private var selectedSoundEffect: SoundEffect? = nil
     @State private var showEmojiError: Bool = false
     
     private var isValid: Bool {
@@ -33,7 +34,7 @@ struct ModifyCardView: View {
     }
     
     private var shouldDisableInteraciveDismiss: Bool {
-        !title.isEmpty || !emoji.isEmpty || !emoji.isEmpty || !message.isEmpty || !selectedColors.isEmpty
+        !title.isEmpty || !emoji.isEmpty || !message.isEmpty || !selectedColors.isEmpty || selectedSoundEffect != nil
     }
     
     private var shouldDisableSaveButtonWhenEditingExistingCard: Bool {
@@ -41,7 +42,7 @@ struct ModifyCardView: View {
             return false
         }
         
-        if editingCard.title == self.title && editingCard.emoji == self.emoji && editingCard.message == self.message && Set(editingCard.colors) == self.selectedColors {
+        if editingCard.title == self.title && editingCard.emoji == self.emoji && editingCard.message == self.message && Set(editingCard.colors) == self.selectedColors && editingCard.soundEffect == self.selectedSoundEffect {
             return true
         } else {
             return false
@@ -130,6 +131,44 @@ struct ModifyCardView: View {
                         .cornerRadius(16)
                 }
                 .padding(.horizontal)
+                
+                Divider().padding(.horizontal)
+                
+                VStack(spacing: 15) {
+                    Text("Sound Effect")
+                        .customFont(size: 18, weight: .medium, design: .rounded)
+                        .foregroundStyle(.secondary)
+                    
+                    Picker("Sound Effect", selection: $selectedSoundEffect) {
+                        Text("None")
+                            .tag(Optional<SoundEffect>.none)
+                        
+                        ForEach(SoundEffect.allCases) { effect in
+                            Text(effect.rawValue)
+                                .tag(Optional<SoundEffect>.some(effect))
+                        }
+                    }
+                    .pickerStyle(.menu)
+                    .alignView(to: .leading)
+                    .padding()
+                    .background(Material.ultraThin)
+                    .cornerRadius(16)
+                    
+                    if let selectedEffect = selectedSoundEffect {
+                        Button {
+                            do {
+                                try SoundEffectManager.shared.playSoundEffect(selectedEffect)
+                            } catch {
+                                errorManager.showError(error as? SoundEffectManagerError ?? .unknownError)
+                            }
+                        } label: {
+                            Label("Preview Sound", systemImage: "play.circle.fill")
+                                .customFont(size: 16, weight: .medium)
+                        }
+                        .scaleButtonStyle()
+                    }
+                }
+                .padding(.horizontal)
             }
             .padding(.vertical)
         }
@@ -193,6 +232,7 @@ struct ModifyCardView: View {
                     self.emoji = editingCard.emoji
                     self.message = editingCard.message
                     self.selectedColors = Set(editingCard.colors)
+                    self.selectedSoundEffect = editingCard.soundEffect
                 }
             }
         }
@@ -207,7 +247,7 @@ struct ModifyCardView: View {
     }
     
     private func saveChanges() {
-        let cardToSave = Card(title: title, emoji: emoji, colors: Array(selectedColors), message: message, creationDate: Date.now)
+        let cardToSave = Card(title: title, emoji: emoji, colors: Array(selectedColors), message: message, soundEffect: selectedSoundEffect, creationDate: Date.now)
         
         do {
             if let editingCard = self.editingCard {
@@ -227,6 +267,7 @@ struct ModifyCardView: View {
             self.emoji.removeAll()
             self.message.removeAll()
             self.selectedColors.removeAll()
+            self.selectedSoundEffect = nil
         }
     }
 }

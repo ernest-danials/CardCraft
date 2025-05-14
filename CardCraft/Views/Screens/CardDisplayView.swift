@@ -6,16 +6,18 @@
 //
 
 import SwiftUI
+import ErrorManager
 
 struct CardDisplayView: View {
     @EnvironmentObject var viewModel: ViewModel
+    @EnvironmentObject var errorManager: ErrorManager
     
     @State private var points: [SIMD2<Float>] = [
         [0.0, 0.0], [0.5, 0.0], [1.0, 0.0],
         [0.0, 0.5], [0.5, 0.5], [1.0, 0.5],
         [0.0, 1.0], [0.5, 1.0], [1.0, 1.0]
     ]
-    @State private var isShowingCloseButton: Bool = false
+    @State private var isShowingInstructions: Bool = true
     
     var body: some View {
         ZStack {
@@ -45,24 +47,20 @@ struct CardDisplayView: View {
                         
                         Spacer()
                         
-                        if isShowingCloseButton {
-                            Button {
-                                self.viewModel.hideCardDisplayView()
-                            } label: {
-                                let backgroundColor: CardColor = card.colors.first ?? .blue
-                                
-                                Text("Close")
-                                    .customFont(size: 18, weight: .semibold, design: .rounded)
-                                    .clipped()
-                                    .foregroundStyle(backgroundColor.getTextColor())
-                                    .alignView(to: .center)
-                                    .padding()
-                                    .background(backgroundColor.getColor().gradient)
-                                    .cornerRadius(17, corners: .allCorners)
+                        if isShowingInstructions {
+                            var instructionText: String {
+                                if card.soundEffect == nil {
+                                    return "Double tap to close."
+                                } else {
+                                    return "Double tap to close. Triple tap to play the sound effect."
+                                }
                             }
-                            .scaleButtonStyle()
-                            .padding(.bottom)
-                            .transition(.blurReplace)
+                            
+                            Text(instructionText)
+                                .customFont(size: 17, weight: .medium, design: .rounded)
+                                .multilineTextAlignment(.center)
+                                .foregroundStyle(.secondary)
+                                .transition(.blurReplace)
                         }
                     }
                     .padding(30)
@@ -78,11 +76,27 @@ struct CardDisplayView: View {
         .onAppear {
             startTimer()
             
-            DispatchQueue.main.asyncAfter(deadline: .now() + 4.0) {
-                withAnimation(.spring) { self.isShowingCloseButton = true }
+            DispatchQueue.main.asyncAfter(deadline: .now() + 3.0) {
+                withAnimation(.spring) { self.isShowingInstructions = false }
+            }
+        }
+        .onTapGesture {
+            withAnimation(.spring) { self.isShowingInstructions = true }
+            
+            DispatchQueue.main.asyncAfter(deadline: .now() + 3.0) {
+                withAnimation(.spring) { self.isShowingInstructions = false }
             }
         }
         .onTapGesture(count: 2, perform: viewModel.hideCardDisplayView)
+        .onTapGesture(count: 3) {
+            do {
+                if let card = self.viewModel.selectedCard, let soundEffect = card.soundEffect {
+                    try SoundEffectManager.shared.playSoundEffect(soundEffect)
+                }
+            } catch {
+                self.errorManager.showError(error as? SoundEffectManagerError ?? .unknownError)
+            }
+        }
     }
     
     private func startTimer() {
@@ -98,4 +112,5 @@ struct CardDisplayView: View {
 #Preview {
     CardDisplayView()
         .environmentObject(ViewModel())
+        .environmentObject(ErrorManager())
 }
