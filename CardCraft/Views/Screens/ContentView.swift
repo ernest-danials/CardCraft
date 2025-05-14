@@ -33,7 +33,7 @@ struct ContentView: View {
                             } else if !self.viewModel.searchText.isEmpty {
                                 ContentUnavailableView("No Results for \"\(self.viewModel.searchText)\"", systemImage: "magnifyingglass", description: Text("Try adjusting your search term or check the spelling. CardCraft only supports a search in the prefix of the card title."))
                             } else {
-                                ContentUnavailableView("You Have No Cards Yet", systemImage: "rectangle.stack.badge.plus", description: Text("Tap the 'Create a New Card' button below to get started with your first card"))
+                                ContentUnavailableView("You Have No Cards Yet", systemImage: "rectangle.stack.badge.plus", description: Text("Tap the 'Create a New Card' button below to get started with your first card or browse our collection."))
                             }
                         }.padding()
                     }
@@ -41,7 +41,7 @@ struct ContentView: View {
                     .searchable(text: $viewModel.searchText, placement: .navigationBarDrawer(displayMode: .automatic), prompt: Text("Search for Cards"))
                     .navigationTitle("CardCraft")
                     .safeAreaInset(edge: .bottom, spacing: 20) {
-                        createNewCardButton(geo: geo)
+                        bottomButtons(geo: geo)
                     }
                     .ignoresSafeArea(edges: .bottom)
                 }
@@ -53,10 +53,13 @@ struct ContentView: View {
                             }
                         }
                 }
-                .sheet(isPresented: $viewModel.isShowingCreateCardView, onDismiss: viewModel.hideCreateCardView) {
+                .sheet(isPresented: $viewModel.isShowingCreateCardView) {
                     NavigationStack {
                         ModifyCardView(editingCard: nil)
                     }
+                }
+                .sheet(isPresented: $viewModel.isShowingCollectionView) {
+                    CollectionView()
                 }
                 .portalTransition(
                     item: $viewModel.selectedCard,
@@ -75,7 +78,7 @@ struct ContentView: View {
         }
     }
     
-    func createNewCardButton(geo: GeometryProxy) -> some View {
+    func bottomButtons(geo: GeometryProxy) -> some View {
         VStack {
             Button {
                 self.viewModel.showCreateCardView()
@@ -88,6 +91,14 @@ struct ContentView: View {
                     .padding()
                     .background(Color.accentColor.gradient)
                     .cornerRadius(16, corners: .allCorners)
+            }.scaleButtonStyle()
+            
+            Button {
+                self.viewModel.showCollectionView()
+            } label: {
+                Text("Browse Our Collection")
+                    .customFont(size: 17, weight: .medium, design: .rounded)
+                    .foregroundStyle(Color.accentColor)
             }.scaleButtonStyle()
         }
         .padding()

@@ -70,4 +70,23 @@ final class ViewModel: ObservableObject {
             HapticManager.shared.impact(style: .soft)
         }
     }
+    
+    // MARK: - Collection
+    @Published var isShowingCollectionView: Bool = false
+    
+    func showCollectionView() {
+        withAnimation(.spring) {
+            self.isShowingCollectionView = true
+            HapticManager.shared.impact(style: .soft)
+        }
+    }
+    
+    func hideCollectionView() {
+        guard self.isShowingCollectionView else { return }
+        
+        withAnimation(.spring) {
+            self.isShowingCollectionView = false
+            HapticManager.shared.impact(style: .soft)
+        }
+    }
 }

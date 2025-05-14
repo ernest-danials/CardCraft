@@ -32,6 +32,22 @@ struct ModifyCardView: View {
         !title.isEmpty && !emoji.isEmpty && isEmojiValid(emoji) && !message.isEmpty && selectedColors.count >= 2
     }
     
+    private var shouldDisableInteraciveDismiss: Bool {
+        !title.isEmpty || !emoji.isEmpty || !emoji.isEmpty || !message.isEmpty || !selectedColors.isEmpty
+    }
+    
+    private var shouldDisableSaveButtonWhenEditingExistingCard: Bool {
+        guard let editingCard = self.editingCard else {
+            return false
+        }
+        
+        if editingCard.title == self.title && editingCard.emoji == self.emoji && editingCard.message == self.message && Set(editingCard.colors) == self.selectedColors {
+            return true
+        } else {
+            return false
+        }
+    }
+    
     var body: some View {
         ScrollView {
             VStack(spacing: 25) {
@@ -118,7 +134,8 @@ struct ModifyCardView: View {
             .padding(.vertical)
         }
         .prioritiseScaleButtonStyle()
-        .scrollDismissesKeyboard(.interactively)
+        .scrollDismissesKeyboard(.immediately)
+        .interactiveDismissDisabled(shouldDisableInteraciveDismiss)
         .navigationTitle(self.editingCard == nil ? "Create Card" : "Edit Card")
         .navigationBarTitleDisplayMode(.inline)
         .safeAreaInset(edge: .bottom, spacing: 20) {
@@ -161,13 +178,12 @@ struct ModifyCardView: View {
             ToolbarItem(placement: .topBarTrailing) {
                 Button("Save") {
                     saveChanges()
-                    dismiss()
                     self.viewModel.hideCardDetailView()
                     reset()
                     HapticManager.shared.impact(style: .soft)
                 }
                 .fontWeight(.semibold)
-                .disabled(!isValid)
+                .disabled(!isValid || shouldDisableSaveButtonWhenEditingExistingCard)
             }
         }
         .task {

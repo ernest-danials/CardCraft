@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct MockData {
+struct CardCollection {
     static let cardData: [Card] = [
         Card(title: "Happy Mother's Day!", 
              emoji: "💐", 

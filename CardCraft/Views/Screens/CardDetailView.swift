@@ -169,7 +169,7 @@ struct CardDetailView: View {
 }
 
 #Preview {
-    CardDetailView(card: MockData.cardData[0])
+    CardDetailView(card: CardCollection.cardData[0])
         .environmentObject(ViewModel())
         .environmentObject(CrossModel())
         .environmentObject(CardManager())
