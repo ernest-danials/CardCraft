@@ -139,9 +139,15 @@ struct CardDetailView: View {
                                 HapticManager.shared.impact(style: .soft)
                             })
                             
-                            Button {
+                            ShareLink(
+                                item: """
+                                \(card.emoji) \(card.title)
                                 
-                            } label: {
+                                \(card.message)
+                                
+                                Shared from CardCraft
+                                """
+                            ) {
                                 Label("Share", systemImage: "square.and.arrow.up")
                                     .customFont(size: 18, weight: .semibold, design: .rounded)
                                     .clipped()
@@ -151,7 +157,11 @@ struct CardDetailView: View {
                                     .padding()
                                     .background(Material.ultraThin)
                                     .cornerRadius(17, corners: .allCorners)
-                            }.scaleButtonStyle()
+                            }
+                            .scaleButtonStyle()
+                            .simultaneousGesture(TapGesture().onEnded {
+                                HapticManager.shared.impact(style: .soft)
+                            })
                         }
                         
                         Button {
