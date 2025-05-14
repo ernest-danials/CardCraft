@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		176D996E2DD2592F00ACEED2 /* Portal in Frameworks */ = {isa = PBXBuildFile; productRef = 176D996D2DD2592F00ACEED2 /* Portal */; };
+		1787ED092DD46EC300D3AA36 /* ErrorManager in Frameworks */ = {isa = PBXBuildFile; productRef = 1787ED082DD46EC300D3AA36 /* ErrorManager */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -28,6 +29,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				176D996E2DD2592F00ACEED2 /* Portal in Frameworks */,
+				1787ED092DD46EC300D3AA36 /* ErrorManager in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -71,6 +73,7 @@
 			name = CardCraft;
 			packageProductDependencies = (
 				176D996D2DD2592F00ACEED2 /* Portal */,
+				1787ED082DD46EC300D3AA36 /* ErrorManager */,
 			);
 			productName = CardCraft;
 			productReference = 176D96E82DD24C0300ACEED2 /* CardCraft.app */;
@@ -102,6 +105,7 @@
 			minimizedProjectReferenceProxies = 1;
 			packageReferences = (
 				176D996C2DD2592F00ACEED2 /* XCRemoteSwiftPackageReference "Portal" */,
+				1787ED072DD46EC300D3AA36 /* XCRemoteSwiftPackageReference "ErrorManager" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 176D96E92DD24C0300ACEED2 /* Products */;
@@ -343,6 +347,14 @@
 				minimumVersion = 1.0.0;
 			};
 		};
+		1787ED072DD46EC300D3AA36 /* XCRemoteSwiftPackageReference "ErrorManager" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/ernest-danials/ErrorManager";
+			requirement = {
+				branch = main;
+				kind = branch;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -350,6 +362,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 176D996C2DD2592F00ACEED2 /* XCRemoteSwiftPackageReference "Portal" */;
 			productName = Portal;
+		};
+		1787ED082DD46EC300D3AA36 /* ErrorManager */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 1787ED072DD46EC300D3AA36 /* XCRemoteSwiftPackageReference "ErrorManager" */;
+			productName = ErrorManager;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

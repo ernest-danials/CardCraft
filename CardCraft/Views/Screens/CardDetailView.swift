@@ -7,9 +7,14 @@
 
 import SwiftUI
 import Portal
+import ErrorManager
 
 struct CardDetailView: View {
     @EnvironmentObject var viewModel: ViewModel
+    @EnvironmentObject var cardManager: CardManager
+    @EnvironmentObject var errorManager: ErrorManager
+    
+    @State private var showingDeleteConfirmation = false
     let card: Card
     
     var body: some View {
@@ -38,21 +43,15 @@ struct CardDetailView: View {
                                 .customFont(size: 18, weight: .medium)
                                 .foregroundStyle(.secondary)
                             
-                            ScrollView(.horizontal) {
-                                HStack(spacing: 12) {
-                                    ForEach(self.card.colors) { color in
-                                        Circle()
-                                            .fill(color.getColor())
-                                            .containerRelativeFrame(.horizontal, count: 4, spacing: 12)
-                                    }
+                            HStack(spacing: 12) {
+                                ForEach(self.card.colors) { color in
+                                    Circle()
+                                        .fill(color.getColor())
+                                        .frame(width: 70, height: 70)
                                 }
-                                .padding(.vertical, 8)
-                                .padding(.horizontal, 4)
-                                .scrollTargetLayout()
                             }
-                            .scrollIndicators(.hidden)
-                            .scrollTargetBehavior(.viewAligned)
-                            .contentMargins(.horizontal, 10, for: .scrollContent)
+                            .padding(.vertical, 8)
+                            .padding(.horizontal, 4)
                         }
                         
                         Divider().padding(.vertical)
@@ -71,6 +70,35 @@ struct CardDetailView: View {
                 }
                 .navigationBarTitleDisplayMode(.inline)
                 .toolbar {
+                    ToolbarItem(placement: .topBarLeading) {
+                        Button {
+                            showingDeleteConfirmation = true
+                            HapticManager.shared.notification(type: .warning)
+                        } label: {
+                            Image(systemName: "trash.fill")
+                                .fontWeight(.medium)
+                                .foregroundStyle(.red)
+                        }
+                        .confirmationDialog(
+                            "Are you sure you want to delete this card?",
+                            isPresented: $showingDeleteConfirmation,
+                            titleVisibility: .visible
+                        ) {
+                            Button("Delete", role: .destructive) {
+                                do {
+                                    try cardManager.deleteCard(id: card.id)
+                                    try cardManager.saveCards()
+                                    viewModel.hideCardDetailView()
+                                } catch {
+                                    print("Error deleting card: \(error)")
+                                    self.errorManager.showError(error as? CardManagerError ?? .unknownError)
+                                }
+                            }
+                        } message: {
+                            Text("This action cannot be undone.")
+                        }
+                    }
+                    
                     ToolbarItem(placement: .topBarTrailing) {
                         Button("Done") {
                             self.viewModel.hideCardDetailView()
@@ -78,29 +106,35 @@ struct CardDetailView: View {
                         .fontWeight(.semibold)
                     }
                 }
-                .safeAreaInset(edge: .bottom, spacing: 15) {
+                .safeAreaInset(edge: .bottom, spacing: 20) {
                     VStack(spacing: 13) {
                         HStack {
-                            Button {
-                                
+                            NavigationLink {
+                                ModifyCardView(editingCard: self.card, shouldShowCancelButton: false)
                             } label: {
-                                Text("Edit")
+                                Label("Edit", systemImage: "pencil")
                                     .customFont(size: 18, weight: .semibold, design: .rounded)
                                     .clipped()
                                     .foregroundStyle(Color.accentColor)
+                                    .frame(height: 25)
                                     .alignView(to: .center)
                                     .padding()
                                     .background(Material.ultraThin)
                                     .cornerRadius(17, corners: .allCorners)
-                            }.scaleButtonStyle()
+                            }
+                            .scaleButtonStyle()
+                            .simultaneousGesture(TapGesture().onEnded {
+                                HapticManager.shared.impact(style: .soft)
+                            })
                             
                             Button {
                                 
                             } label: {
-                                Text("Share")
+                                Label("Share", systemImage: "square.and.arrow.up")
                                     .customFont(size: 18, weight: .semibold, design: .rounded)
                                     .clipped()
                                     .foregroundStyle(Color.accentColor)
+                                    .frame(height: 25)
                                     .alignView(to: .center)
                                     .padding()
                                     .background(Material.ultraThin)
@@ -109,15 +143,17 @@ struct CardDetailView: View {
                         }
                         
                         Button {
-                            
+                            self.viewModel.showCardDisplayView()
                         } label: {
-                            Text("Display")
+                            let backgroundColor: CardColor = card.colors.first ?? .blue
+                            
+                            Label("Display", systemImage: "giftcard.fill")
                                 .customFont(size: 18, weight: .semibold, design: .rounded)
                                 .clipped()
-                                .foregroundStyle(.white)
+                                .foregroundStyle(backgroundColor.getTextColor())
                                 .alignView(to: .center)
                                 .padding()
-                                .background(Color.accentColor.gradient)
+                                .background(backgroundColor.getColor().gradient)
                                 .cornerRadius(17, corners: .allCorners)
                         }.scaleButtonStyle()
                     }
@@ -134,6 +170,8 @@ struct CardDetailView: View {
 
 #Preview {
     CardDetailView(card: MockData.cardData[0])
-    .environmentObject(ViewModel())
-    .environmentObject(CrossModel())
+        .environmentObject(ViewModel())
+        .environmentObject(CrossModel())
+        .environmentObject(CardManager())
+        .environmentObject(ErrorManager())
 }

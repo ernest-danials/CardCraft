@@ -24,11 +24,50 @@ final class ViewModel: ObservableObject {
         
         withAnimation(.spring) {
             self.selectedCard = nil
+            self.isShowingCardDisPlayView = false
         }
         
         HapticManager.shared.impact(style: .soft)
     }
     
-    // MARK: - Search
+    // MARK: - ContentView Search
     @Published var searchText: String = ""
+    
+    // MARK: - CardDisplayView
+    @Published var isShowingCardDisPlayView: Bool = false
+    
+    func showCardDisplayView() {
+        withAnimation(.spring) {
+            self.isShowingCardDisPlayView = true
+            HapticManager.shared.impact(style: .soft)
+        }
+    }
+    
+    func hideCardDisplayView() {
+        guard self.isShowingCardDisPlayView else { return }
+        
+        withAnimation(.spring) {
+            self.isShowingCardDisPlayView = false
+            HapticManager.shared.impact(style: .soft)
+        }
+    }
+    
+    // MARK: - CreateCardView
+    @Published var isShowingCreateCardView: Bool = false
+    
+    func showCreateCardView() {
+        withAnimation(.spring) {
+            self.isShowingCreateCardView = true
+            HapticManager.shared.impact(style: .soft)
+        }
+    }
+    
+    func hideCreateCardView() {
+        guard self.isShowingCreateCardView else { return }
+        
+        withAnimation(.spring) {
+            self.isShowingCreateCardView = false
+            HapticManager.shared.impact(style: .soft)
+        }
+    }
 }

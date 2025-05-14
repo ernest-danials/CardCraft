@@ -63,4 +63,13 @@ enum CardColor: Identifiable, Codable, CaseIterable {
             return .mint
         }
     }
+    
+    func getTextColor() -> Color {
+        switch self {
+        case .red, .blue, .purple, .pink, .indigo:
+            return .white
+        case .green, .orange, .teal, .yellow, .mint:
+            return .black
+        }
+    }
 }

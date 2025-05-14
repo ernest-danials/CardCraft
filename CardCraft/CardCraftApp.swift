@@ -6,13 +6,20 @@
 //
 
 import SwiftUI
+import ErrorManager
 
 @main
 struct CardCraftApp: App {
+    @StateObject var viewModel = ViewModel()
+    @StateObject var cardManager = CardManager()
+    @StateObject var errorManager = ErrorManager()
+    
     var body: some Scene {
         WindowGroup {
             ContentView()
-                .environmentObject(ViewModel())
+                .environmentObject(viewModel)
+                .environmentObject(cardManager)
+                .environmentObject(errorManager)
         }
     }
 }

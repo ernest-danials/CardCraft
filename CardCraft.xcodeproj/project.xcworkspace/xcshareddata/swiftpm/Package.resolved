@@ -1,6 +1,15 @@
 {
-  "originHash" : "a40b7d8e7d68771c4b2ef8a8dc1a3cc5646286472c81d0f067229664a4cec693",
+  "originHash" : "11f6b8ae5dbd10a58e5efddfdc81ab7e251ce6e196bfbdfbe74a522291dd4579",
   "pins" : [
+    {
+      "identity" : "errormanager",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/ernest-danials/ErrorManager",
+      "state" : {
+        "branch" : "main",
+        "revision" : "f95f647413dad123198ece79777764c39e71919e"
+      }
+    },
     {
       "identity" : "portal",
       "kind" : "remoteSourceControl",

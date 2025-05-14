@@ -17,9 +17,7 @@ final class CardManager: ObservableObject {
         return documents.appendingPathComponent("cards.json")
     }
     
-    required init() { loadCards() }
-    
-    func loadCards() {
+    func loadCards() throws {
         let decoder = JSONDecoder()
         
         do {
@@ -28,10 +26,11 @@ final class CardManager: ObservableObject {
             self.cards = decoded
         } catch {
             print("Failed to load Cards: ", error)
+            throw CardManagerError.couldNotDecode
         }
     }
     
-    func saveCards() {
+    func saveCards() throws {
         let encoder = JSONEncoder()
         
         do {
@@ -40,12 +39,12 @@ final class CardManager: ObservableObject {
             print("Cards successfully encoded and saved: \(data)")
         } catch {
             print("Failed to save Cards: ", error)
+            throw CardManagerError.couldNotEncode
         }
     }
     
     func addCard(_ newCard: Card) {
         self.cards.append(newCard)
-        saveCards()
     }
     
     func deleteCard(id: String) throws {
@@ -54,10 +53,22 @@ final class CardManager: ObservableObject {
         }
         
         self.cards.remove(at: index)
-        saveCards()
     }
 }
 
-enum CardManagerError: Error {
-    case cardNotFound
+enum CardManagerError: LocalizedError {
+    case cardNotFound, couldNotDecode, couldNotEncode, unknownError
+    
+    var localizedDescription: String? {
+        switch self {
+        case .cardNotFound:
+            return "Could not find the card."
+        case .couldNotDecode:
+            return "Could not decode the saved card data."
+        case .couldNotEncode:
+            return "Could not encode the saved card data."
+        case .unknownError:
+            return "An unknown error occurred."
+        }
+    }
 }
