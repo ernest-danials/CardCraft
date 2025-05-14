@@ -217,7 +217,7 @@ struct ModifyCardView: View {
             ToolbarItem(placement: .topBarTrailing) {
                 Button("Save") {
                     saveChanges()
-                    self.viewModel.hideCardDetailView()
+                    self.viewModel.hideCreateCardView()
                     reset()
                     HapticManager.shared.impact(style: .soft)
                 }
